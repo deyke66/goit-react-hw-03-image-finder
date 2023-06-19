@@ -3,37 +3,45 @@ import style from './App.module.css';
 import { Searchbar } from './Searchbar/Searchbar';
 import { Gallery } from './ImageGallery/ImageGallery';
 import { getData } from './helpers/fetchFunc';
-
+import { Modal } from './Modal/Modal';
 
 export class App extends Component {
   state = {
     searchResult: '',
     page: 1,
     articles: [],
+    originalImg: '',
     isLoading: false,
-    showModal: false
+    showModal: false,
   };
-
 
   async componentDidUpdate(prevProps, prevState) {
     if (prevState.searchResult !== this.state.searchResult) {
       try {
-        const fetchData = await getData(this.state.searchResult, this.state.page);
-        const result = fetchData.data.hits
-        this.setState({articles: [...result]})
-      } catch (error) {
-        
-      }
+        const fetchData = await getData(
+          this.state.searchResult,
+          this.state.page
+        );
+        const result = fetchData.data.hits;
+        this.setState({ articles: [...result] });
+      } catch (error) {}
+    }
+  }
+  modalToggle = () => {
+    this.setState(prevState => ({ showModal: !prevState.showModal }));
+  }
+
+  handleModalEvent = e => {
+    const {nodeName: currentElement} = e.target
+    if (currentElement !== 'IMG') {
+      this.modalToggle()
     }
   }
 
-  handleToggleModal = e => {
-    this.setState(prevState => {
-      return {
-        showModal: !prevState.showModal
-      }
-    })
-  }
+  handleSaveUrlForModal = e => {
+    this.setState({ originalImg: e.currentTarget.dataset.source });
+    this.modalToggle();
+  };
   handleSubmitBtn = e => {
     e.preventDefault();
     const { value } = e.target.elements.search;
@@ -41,12 +49,12 @@ export class App extends Component {
     this.setState({ searchResult: value });
   };
   render() {
-    const { articles, showModal } = this.state
-    console.log('app', showModal)
+    const { articles, originalImg, showModal } = this.state;
     return (
       <div className={style.App}>
         <Searchbar onSubmit={this.handleSubmitBtn} />
-        <Gallery articles={articles} onClick={this.handleToggleModal} showModal={showModal} />
+        <Gallery articles={articles} onClick={this.handleSaveUrlForModal} />
+        {showModal && <Modal originalImg={originalImg} onClose={this.modalToggle} onClick={this.handleModalEvent} />}
       </div>
     );
   }

@@ -1,7 +1,7 @@
 import style from './ImageGallery.module.css';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 
-export const Gallery = ({ articles, onClick, showModal }) => {
+export const Gallery = ({ articles, onClick }) => {
   return (
     <ul className={style.ImageGallery}>
       {articles.map(i => (
@@ -9,8 +9,7 @@ export const Gallery = ({ articles, onClick, showModal }) => {
           key={i.id}
           webUrl={i.webformatURL}
           onClick={onClick}
-              showModal={showModal}
-              largeImageURL={i.largeImageURL}
+          largeImageURL={i.largeImageURL}
         />
       ))}
     </ul>
