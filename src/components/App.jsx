@@ -28,15 +28,8 @@ export class App extends Component {
     }
   }
   modalToggle = () => {
-    this.setState(prevState => ({ showModal: !prevState.showModal }));
-  }
-
-  handleModalEvent = e => {
-    const {nodeName: currentElement} = e.target
-    if (currentElement !== 'IMG') {
-      this.modalToggle()
-    }
-  }
+    this.setState(({ showModal }) => ({ showModal: !showModal }));
+  };
 
   handleSaveUrlForModal = e => {
     this.setState({ originalImg: e.currentTarget.dataset.source });
@@ -54,7 +47,9 @@ export class App extends Component {
       <div className={style.App}>
         <Searchbar onSubmit={this.handleSubmitBtn} />
         <Gallery articles={articles} onClick={this.handleSaveUrlForModal} />
-        {showModal && <Modal originalImg={originalImg} onClose={this.modalToggle} onClick={this.handleModalEvent} />}
+        {showModal && (
+          <Modal originalImg={originalImg} onClose={this.modalToggle} />
+        )}
       </div>
     );
   }
