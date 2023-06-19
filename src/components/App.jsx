@@ -31,7 +31,7 @@ export class App extends Component {
     this.setState(({ showModal }) => ({ showModal: !showModal }));
   };
 
-  handleSaveUrlForModal = e => {
+  handleOpenModal = e => {
     this.setState({ originalImg: e.currentTarget.dataset.source });
     this.modalToggle();
   };
@@ -46,7 +46,7 @@ export class App extends Component {
     return (
       <div className={style.App}>
         <Searchbar onSubmit={this.handleSubmitBtn} />
-        <Gallery articles={articles} onClick={this.handleSaveUrlForModal} />
+        <Gallery articles={articles} onClick={this.handleOpenModal} />
         {showModal && (
           <Modal originalImg={originalImg} onClose={this.modalToggle} />
         )}
