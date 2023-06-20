@@ -1,7 +1,12 @@
 import { Component } from 'react';
 import style from './Modal.module.css';
+import PropTypes from "prop-types"
 
 export class Modal extends Component {
+  static propTypes = {
+    originalImg: PropTypes.string,
+    onClose: PropTypes.func
+  }
   componentDidMount() {
     window.addEventListener('keydown', this.handleModalClose);
   }
